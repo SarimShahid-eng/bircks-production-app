@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -19,6 +20,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Blade::directive('activeMenu', function ($route) {
+            return "<?php echo request()->routeIs($route) ? 'menu-item-active' : 'menu-item-inactive'; ?>";
+        });
+        Blade::directive('menuDropdownItem', function ($route) {
+            return "<?php echo request()->routeIs($route) ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive'; ?>";
+        });
     }
 }

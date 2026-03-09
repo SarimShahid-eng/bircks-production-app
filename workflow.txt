@@ -1,0 +1,54 @@
+Supplier register
+customer register
+material entry(name,unit,stock_quantity(how much he already have),avg_rate:1200)
+material purchase(material_id,qty,rate,total,paid,remaining)
+total_stock_quantity = stock_quantity from material + purchased_quantity
+
+Raw Bricks
+when produced,how much produced,used_quantity,remaining_quantity
+
+Batch production where everything mixes up and proper bricks formed
+batch_no(auto generate unique etc B-001)
+production_date
+raw_bricks_used
+other_materials_cost
+labor_cost
+fuel_cost
+total_cost
+bricks_produced
+and will material used here in multi-select
+
+Supplier customer
+supplier customer amounts will be recorded only because when we make a purchase of 50000 amount now we owe him 50000
+so will make an entry in amount and it will only deduct from total purchase amount no headache at all
+same opposite for customer we make a sale now he owes that amount and we make an entry of amount accordingly and it will
+deduct from total-amount= balance
+
+
+                OVERALL FLOW (Step by Step)
+1.Purchase raw materials
+- Update stock
+- Record payment & supplier ledger
+
+2.Produce raw bricks (kacchi)
+- Enter quantity produced
+- System updates raw brick stock
+
+3.Produce fired bricks (batch)
+
+-Select raw bricks used
+-Select/enter other materials, labor, fuel
+-System calculates total cost
+-Update raw brick stock automatically
+
+4.Sell bricks to customers
+-Enter quantity sold, rate, payment
+-Update customer ledger
+
+5.Expenses
+-Enter separately (office, transport, etc.)
+-System can link batch expenses if needed
+
+6.Profit
+-System calculates profit per batch and overall
+-Reports available: stock, profit, customer dues, supplier dues

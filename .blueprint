@@ -1,0 +1,46 @@
+created:
+    - database/factories/CustomerFactory.php
+    - database/factories/SupplierFactory.php
+    - database/factories/MaterialFactory.php
+    - database/factories/RawBrickFactory.php
+    - database/factories/ProductionBatchFactory.php
+    - database/factories/ProductionMaterialFactory.php
+    - database/factories/PurchaseFactory.php
+    - database/factories/SupplierPaymentFactory.php
+    - database/factories/SaleFactory.php
+    - database/factories/CustomerPaymentFactory.php
+    - database/factories/ExpenseFactory.php
+    - database/migrations/2026_03_05_094036_create_customers_table.php
+    - database/migrations/2026_03_05_094037_create_suppliers_table.php
+    - database/migrations/2026_03_05_094038_create_materials_table.php
+    - database/migrations/2026_03_05_094039_create_raw_bricks_table.php
+    - database/migrations/2026_03_05_094040_create_production_batches_table.php
+    - database/migrations/2026_03_05_094041_create_production_materials_table.php
+    - database/migrations/2026_03_05_094042_create_purchases_table.php
+    - database/migrations/2026_03_05_094043_create_supplier_payments_table.php
+    - database/migrations/2026_03_05_094044_create_sales_table.php
+    - database/migrations/2026_03_05_094045_create_customer_payments_table.php
+    - database/migrations/2026_03_05_094046_create_expenses_table.php
+    - app/Models/Customer.php
+    - app/Models/Supplier.php
+    - app/Models/Material.php
+    - app/Models/RawBrick.php
+    - app/Models/ProductionBatch.php
+    - app/Models/ProductionMaterial.php
+    - app/Models/Purchase.php
+    - app/Models/SupplierPayment.php
+    - app/Models/Sale.php
+    - app/Models/CustomerPayment.php
+    - app/Models/Expense.php
+models:
+    Customer: { name: string, phone: 'string:20 nullable', address: 'text nullable', timestamps: timestamps, relationships: { hasMany: 'Sale, CustomerPayment' } }
+    Supplier: { name: string, phone: 'string:20 nullable', address: 'text nullable', timestamps: timestamps, relationships: { hasMany: 'Purchase, SupplierPayment' } }
+    Material: { name: string, unit: string, stock_quantity: 'decimal:15,2 default:0', avg_rate: 'decimal:15,2 default:0', timestamps: timestamps, relationships: { hasMany: 'Purchase, ProductionMaterial' } }
+    RawBrick: { production_date: date, quantity_produced: integer, timestamps: timestamps }
+    ProductionBatch: { batch_no: 'string unique', production_date: date, raw_bricks_used: integer, bricks_produced: integer, labor_cost: 'decimal:15,2 default:0', fuel_cost: 'decimal:15,2 default:0', total_material_cost: 'decimal:15,2 default:0', total_expense_cost: 'decimal:15,2 default:0', total_cost: 'decimal:15,2 default:0', timestamps: timestamps, relationships: { hasMany: 'ProductionMaterial, Sale, Expense' } }
+    ProductionMaterial: { production_batch_id: id, material_id: id, quantity_used: 'decimal:15,2', rate_at_time: 'decimal:15,2', total_cost: 'decimal:15,2', timestamps: timestamps, relationships: { belongsTo: 'ProductionBatch, Material' } }
+    Purchase: { supplier_id: id, material_id: id, quantity: 'decimal:15,2', rate: 'decimal:15,2', total: 'decimal:15,2', purchase_date: date, timestamps: timestamps, relationships: { belongsTo: 'Supplier, Material', hasMany: SupplierPayment } }
+    SupplierPayment: { supplier_id: id, purchase_id: 'id nullable', amount: 'decimal:15,2', payment_date: date, note: 'text nullable', timestamps: timestamps, relationships: { belongsTo: 'Supplier, Purchase' } }
+    Sale: { customer_id: id, production_batch_id: id, quantity_sold: integer, rate_per_brick: 'decimal:15,2', total: 'decimal:15,2', sale_date: date, timestamps: timestamps, relationships: { belongsTo: 'Customer, ProductionBatch', hasMany: CustomerPayment } }
+    CustomerPayment: { customer_id: id, sale_id: 'id nullable', amount: 'decimal:15,2', payment_date: date, note: 'text nullable', timestamps: timestamps, relationships: { belongsTo: 'Customer, Sale' } }
+    Expense: { production_batch_id: 'id nullable', expense_type: string, amount: 'decimal:15,2', expense_date: date, description: 'text nullable', timestamps: timestamps, relationships: { belongsTo: ProductionBatch } }
