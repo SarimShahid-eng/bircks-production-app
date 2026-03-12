@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Http\Controllers\Supplier;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Http\Requests\MaterialRequest;
 use App\Models\Material;
 use Illuminate\Http\Request;

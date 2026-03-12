@@ -10,12 +10,13 @@ when produced,how much produced,used_quantity,remaining_quantity
 Batch production where everything mixes up and proper bricks formed
 batch_no(auto generate unique etc B-001)
 production_date
-raw_bricks_used
+bricks_produced,
+bricks_wasted
+raw_bricks=bricks_produced+bricks_wasted
 other_materials_cost
 labor_cost
 fuel_cost
 total_cost
-bricks_produced
 and will material used here in multi-select
 
 Supplier customer
@@ -23,6 +24,21 @@ supplier customer amounts will be recorded only because when we make a purchase 
 so will make an entry in amount and it will only deduct from total purchase amount no headache at all
 same opposite for customer we make a sale now he owes that amount and we make an entry of amount accordingly and it will
 deduct from total-amount= balance
+
+
+flow I have made
+
+Material register
+Supplier manage
+payment
+
+purchase
+as supplier makes a purchase that particular amount will be added owed to use than you should make payment
+and which material how much quantity I have purchase will be showed as added accordingly
+how will keep track of supplier owed amount and paid amount here it is
+$totalPurchases = Purchase::where('supplier_id', $supplierId)->sum('total');
+$totalPaid = SupplierPayment::where('supplier_id', $supplierId)->sum('amount');
+$balance = $totalPurchases - $totalPaid;
 
 
                 OVERALL FLOW (Step by Step)

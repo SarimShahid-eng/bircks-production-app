@@ -14,11 +14,16 @@ return new class extends Migration
         Schema::create('production_batches', function (Blueprint $table) {
             $table->id();
             $table->string('batch_no')->unique();
+            $table->string('waste_reason')->nullable();
+            $table->string('other_cost_note')->nullable();
             $table->date('production_date');
-            $table->integer('raw_bricks_used');
+            // raw_bricks=bricks_produced+bricks_wasted
             $table->integer('bricks_produced');
+            $table->integer('bricks_wasted');
+
             $table->decimal('labor_cost', 15, 2)->default(0);
             $table->decimal('fuel_cost', 15, 2)->default(0);
+            $table->decimal('other_cost', 15, 2)->default(0);
             $table->decimal('total_material_cost', 15, 2)->default(0);
             $table->decimal('total_expense_cost', 15, 2)->default(0);
             $table->decimal('total_cost', 15, 2)->default(0);

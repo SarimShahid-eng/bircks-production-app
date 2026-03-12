@@ -184,7 +184,7 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
                             {{-- <img src="./images/logo/auth-logo.svg" alt="Logo" /> --}}
                         </a>
                         <p class="text-center text-gray-400 dark:text-white/60">
-                            Free and Open-Source Tailwind CSS Admin Dashboard Template
+                            Manage Your Bricks Production Business with ease
                         </p>
                     </div>
                 </div>

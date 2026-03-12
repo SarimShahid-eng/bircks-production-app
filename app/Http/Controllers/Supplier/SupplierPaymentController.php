@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\SupplierPaymentRequest;
 use App\Models\Supplier;
 use App\Models\SupplierPayment;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class SupplierPaymentController extends Controller
@@ -25,11 +26,38 @@ class SupplierPaymentController extends Controller
                     ->orWhere('payment_date', 'like', "%{$search}%");
             });
         }
+        if ($request->filled('supplier_id')) {
+            $supplier_id = $request->supplier_id;
+
+            $query->where(function ($q) use ($supplier_id) {
+
+                $q->whereHas('supplier', function ($supplier) use ($supplier_id) {
+                    $supplier->where('supplier_id', $supplier_id);
+                });
+
+            });
+        }
+        if ($request->filled('date_range')) {
+            $parts = explode(' - ', $request->date_range);
+            $startDate = Carbon::createFromFormat('M j, Y', trim($parts[0]))->startOfDay();
+            $endDate = Carbon::createFromFormat('M j, Y', trim($parts[1]))->endOfDay();
+
+            $query->whereBetween('payment_date', [$startDate, $endDate]);
+        }
+
+        $suppliers = Supplier::query()
+            ->whereRaw('
+                        COALESCE((SELECT SUM(total) FROM purchases WHERE purchases.supplier_id = suppliers.id), 0)
+                        >
+                        COALESCE((SELECT SUM(amount) FROM supplier_payments WHERE supplier_payments.supplier_id = suppliers.id), 0)
+                    ')
+            ->orderBy('name')
+            ->get();
 
         $title = 'Supplier management';
         $payments = $query->paginate(10)->withQueryString();
 
-        return view('supplier.suppliersPayment.index', compact('title', 'payments'));
+        return view('supplier.suppliersPayment.index', compact('title', 'payments', 'suppliers'));
 
     }
 
@@ -38,7 +66,14 @@ class SupplierPaymentController extends Controller
      */
     public function create(Request $request)
     {
-        $suppliers = Supplier::all();
+        $suppliers = Supplier::query()
+            ->whereRaw('
+        COALESCE((SELECT SUM(total) FROM purchases WHERE purchases.supplier_id = suppliers.id), 0)
+        >
+        COALESCE((SELECT SUM(amount) FROM supplier_payments WHERE supplier_payments.supplier_id = suppliers.id), 0)
+    ')
+            ->orderBy('name')
+            ->get();
         $title = 'Supplier payment';
 
         return view('supplier.suppliersPayment.create', compact('suppliers', 'title'));
@@ -69,7 +104,7 @@ class SupplierPaymentController extends Controller
         );
         $updatedOrCreated = array_key_exists('updateId', $validated) ? 'Updated' : 'Created';
 
-        return redirect()->route('suppliersPayment.index')->with('success', 'Supplier Payment ' .$updatedOrCreated.' successfully.');
+        return redirect()->route('suppliersPayment.index')->with('success', 'Supplier Payment '.$updatedOrCreated.' successfully.');
     }
 
     /**

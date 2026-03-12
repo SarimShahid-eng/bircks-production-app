@@ -29,7 +29,7 @@
 
     <div class="col-span-12 xl:col-span-7">
         <!-- ====== Table One Start -->
-        @include('partials.table.table-01')
+        {{-- @include('partials.table.table-01') --}}
 
         <!-- ====== Table One End -->
     </div>

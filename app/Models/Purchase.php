@@ -36,9 +36,9 @@ class Purchase extends Model
             'id' => 'integer',
             'supplier_id' => 'integer',
             'material_id' => 'integer',
-            'quantity' => 'decimal:2',
-            'rate' => 'decimal:2',
-            'total' => 'decimal:2',
+            'quantity' => 'integer',
+            'rate' => 'integer',
+            'total' => 'integer',
             'purchase_date' => 'date',
         ];
     }

@@ -7,20 +7,18 @@
         {{-- PAGE HEADER --}}
         <div class="flex flex-col gap-3 mb-6 sm:flex-row sm:items-center sm:justify-between px-3">
             <div>
-                <h2 class="text-2xl font-semibold text-gray-800 dark:text-white/90">Supplier Payments</h2>
+                <h2 class="text-2xl font-semibold text-gray-800 dark:text-white/90">Customer Payments</h2>
                 <p class="text-sm text-gray-500 dark:text-gray-400 mt-0.5">
-                    Manage supplier payment records
+                    Manage customer payment records
                 </p>
             </div>
 
-            <a href="{{ route('suppliersPayment.create') }}"
+            <a href="{{ route('customersPayment.create') }}"
                 class="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-white rounded-lg bg-brand-500 hover:bg-brand-600 transition-colors shadow-theme-xs">
-
                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <line x1="12" y1="5" x2="12" y2="19" />
                     <line x1="5" y1="12" x2="19" y2="12" />
                 </svg>
-
                 Add Payment
             </a>
         </div>
@@ -30,7 +28,6 @@
 
             {{-- TOOLBAR --}}
             <div class="mb-4 flex flex-col gap-3 px-5 sm:flex-row sm:items-center sm:justify-between sm:px-6">
-
                 <div>
                     <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">All Payments</h3>
                     <p class="mt-0.5 text-theme-xs text-gray-500 dark:text-gray-400">
@@ -39,24 +36,23 @@
                 </div>
 
                 {{-- SEARCH --}}
-                <form method="GET" action="{{ route('suppliersPayment.index') }}">
+                <form method="GET" action="{{ route('customersPayment.index') }}">
                     <div class="flex items-center gap-2">
                         <x-datepicker-input name="date_range" value="{{ date('d-m-Y') }}" />
-                        <select name="supplier_id" id="supplierSelect"
+                        <select name="customer_id" id="supplierSelect"
                             class="shadow-theme-xs w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 focus:ring-3 focus:outline-hidden focus:border-brand-300 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90">
-                            <option value="">All Suppliers</option>
-                            @foreach ($suppliers as $supplier)
-                                <option value="{{ $supplier->id }}" @selected(request('supplier_id') == $supplier->id)>
-                                    {{ $supplier->name }}
+                            <option value="">All Customers</option>
+                            @foreach ($customers as $customer)
+                                <option value="{{ $customer->id }}" @selected(request('customer_id') == $customer->id)>
+                                    {{ $customer->name }}
                                 </option>
                             @endforeach
                         </select>
                     </div>
                     <div class="flex items-center gap-2 mt-2">
-                        {{-- Input with search icon inside --}}
-                        <x-search-input placeholder="Search Supplier payments..." />
 
-                        {{-- Search button — outside the relative div --}}
+                        <x-search-input placeholder="Search Customer payments..." />
+
                         <button type="submit"
                             class="inline-flex h-[42px] items-center gap-2 rounded-lg bg-brand-500 px-4 text-sm font-medium text-white shadow-theme-xs hover:bg-brand-600 transition-colors">
                             <svg class="fill-white" width="16" height="16" viewBox="0 0 20 20" fill="none"
@@ -68,9 +64,8 @@
                             Search
                         </button>
 
-                        {{-- Clear button — only when search is active --}}
-                        @if (request('search') || request('supplier_id') || request('date_range'))
-                            <a href="{{ route('suppliersPayment.index') }}"
+                        @if (request('search') || request('customer_id') || request('date_range'))
+                            <a href="{{ route('customersPayment.index') }}"
                                 class="shadow-theme-xs flex h-[42px] items-center rounded-lg border border-gray-300 bg-white px-3.5 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03]">
                                 Clear
                             </a>
@@ -82,34 +77,16 @@
 
             {{-- TABLE --}}
             <div class="custom-scrollbar max-w-full overflow-x-auto px-5 sm:px-6">
-
                 <table class="min-w-full">
 
                     <thead class="border-y border-gray-100 py-3">
                         <tr>
-
                             <th class="py-3 pr-4 text-left text-theme-sm text-gray-500">#</th>
-
-                            <th class="py-3 px-4 text-left text-theme-sm text-gray-500">
-                                Supplier
-                            </th>
-
-                            <th class="py-3 px-4 text-left text-theme-sm text-gray-500">
-                                Amount
-                            </th>
-
-                            <th class="py-3 px-4 text-left text-theme-sm text-gray-500">
-                                Payment Date
-                            </th>
-
-                            <th class="py-3 px-4 text-left text-theme-sm text-gray-500">
-                                Note
-                            </th>
-
-                            <th class="py-3 px-4 text-center text-theme-sm text-gray-500">
-                                Actions
-                            </th>
-
+                            <th class="py-3 px-4 text-left text-theme-sm text-gray-500">Customer</th>
+                            <th class="py-3 px-4 text-left text-theme-sm text-gray-500">Amount</th>
+                            <th class="py-3 px-4 text-left text-theme-sm text-gray-500">Payment Date</th>
+                            <th class="py-3 px-4 text-left text-theme-sm text-gray-500">Note</th>
+                            <th class="py-3 px-4 text-center text-theme-sm text-gray-500">Actions</th>
                         </tr>
                     </thead>
 
@@ -118,31 +95,29 @@
                         @forelse($payments as $index => $payment)
                             <tr class="hover:bg-gray-50 transition-colors">
 
-                                <td class="py-3 pr-4">
+                                <td class="py-3 pr-4 text-sm text-gray-500">
                                     {{ $payments->firstItem() + $index }}
                                 </td>
 
-                                <td class="py-3 px-4">
-                                    {{ $payment->supplier->name ?? 'N/A' }}
+                                <td class="py-3 px-4 text-gray-800 dark:text-white/90">
+                                    {{ $payment->customer->name ?? 'N/A' }}
                                 </td>
 
                                 <td class="py-3 px-4 font-medium text-green-600">
                                     Rs {{ number_format($payment->amount) }}
                                 </td>
 
-                                <td class="py-3 px-4">
+                                <td class="py-3 px-4 text-gray-600 dark:text-gray-400">
                                     {{ \Carbon\Carbon::parse($payment->payment_date)->format('d M Y') }}
                                 </td>
 
-                                <td class="py-3 px-4 max-w-[220px]">
+                                <td class="py-3 px-4 max-w-[220px] text-gray-600 dark:text-gray-400">
                                     {{ $payment->note ?? '—' }}
                                 </td>
 
                                 <td class="px-5 py-4 text-center">
-
                                     <div class="inline-flex items-center gap-1">
-
-                                        <a href="{{ route('suppliersPayment.edit', $payment->id) }}" title="Edit"
+                                        <a href="{{ route('customersPayment.edit', $payment->id) }}" title="Edit"
                                             class="inline-flex items-center justify-center w-8 h-8 rounded-lg text-gray-500 hover:text-brand-500 hover:bg-brand-50 dark:text-gray-400 dark:hover:text-brand-400 dark:hover:bg-brand-500/10 transition-colors">
                                             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"
                                                 stroke-width="2">
@@ -151,13 +126,10 @@
                                             </svg>
                                         </a>
                                     </div>
-
                                 </td>
 
                             </tr>
-
                         @empty
-
                             <tr>
                                 <td colspan="6" class="py-16 text-center text-gray-500">
                                     No payments found
@@ -166,17 +138,14 @@
                         @endforelse
 
                     </tbody>
-
                 </table>
-
             </div>
 
             {{-- PAGINATION --}}
             <div class="border-t border-gray-200 px-6 py-4">
-                {{ $payments->links() }}
+                {{ $payments->appends(request()->query())->links() }}
             </div>
 
         </div>
-
     </div>
 @endsection

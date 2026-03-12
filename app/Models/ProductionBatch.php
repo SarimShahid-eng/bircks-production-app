@@ -18,13 +18,16 @@ class ProductionBatch extends Model
     protected $fillable = [
         'batch_no',
         'production_date',
-        'raw_bricks_used',
+        'bricks_wasted',
         'bricks_produced',
         'labor_cost',
         'fuel_cost',
         'total_material_cost',
         'total_expense_cost',
         'total_cost',
+        'other_cost',
+        'other_cost_note',
+        'waste_reason',
     ];
 
     /**
@@ -42,6 +45,7 @@ class ProductionBatch extends Model
             'total_material_cost' => 'decimal:2',
             'total_expense_cost' => 'decimal:2',
             'total_cost' => 'decimal:2',
+
         ];
     }
 

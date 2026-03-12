@@ -1,4 +1,5 @@
- <div class="relative">
+@props(['placeholder'])
+<div class="relative">
      <span class="pointer-events-none absolute top-1/2 left-4 -translate-y-1/2">
          <svg class="fill-gray-500 dark:fill-gray-400" width="20" height="20" viewBox="0 0 20 20" fill="none"
              xmlns="http://www.w3.org/2000/svg">
@@ -7,6 +8,6 @@
                  fill="" />
          </svg>
      </span>
-     <input type="text" name="search" value="{{ request('search') }}" placeholder="Search suppliers..."
+     <input type="text" name="search" value="{{ request('search') }}" placeholder="{{ $placeholder }}"
          class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-[42px] w-full rounded-lg border border-gray-300 bg-transparent py-2.5 pr-4 pl-[42px] text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden xl:w-[280px] dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30">
  </div>
