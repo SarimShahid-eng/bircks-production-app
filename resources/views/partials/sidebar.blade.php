@@ -1,20 +1,35 @@
 <aside :class="sidebarToggle ? 'translate-x-0 lg:w-[90px]' : '-translate-x-full'"
     class="sidebar fixed left-0 top-0 z-9999 flex h-screen w-[290px] flex-col overflow-y-hidden border-r border-gray-200 bg-white px-5 dark:border-gray-800 dark:bg-black lg:static lg:translate-x-0">
     <!-- SIDEBAR HEADER -->
+    <!-- SIDEBAR HEADER -->
     <div :class="sidebarToggle ? 'justify-center' : 'justify-between'"
-        class="flex items-center gap-2 pt-8 sidebar-header pb-7">
-        <a href="index.html">
-            <span class="logo" :class="sidebarToggle ? 'hidden' : ''">
-                <img class="dark:hidden" src="{{ asset('admin_assets') }}/logo/brick-management-tailadmin.svg"
-                    alt="Logo" />
-                <img class="hidden dark:block" src="{{ asset('admin_assets') }}/logo/brick-management-tailadmin.svg"
-                    alt="Logo" />
+        class="flex items-center pt-8 sidebar-header pb-7">
+
+        <a href="{{ route('dashboard') }}" class="flex items-center gap-2.5 min-w-0">
+
+            {{-- Icon — always visible --}}
+            <img src="{{ asset('admin_assets/logo/logo-icon-only.svg') }}" alt="Logo" class="w-8 h-8 flex-shrink-0" />
+
+            {{-- Text — hidden when sidebar collapsed --}}
+            <span :class="sidebarToggle ? 'lg:hidden' : ''"
+                class="text-base font-medium text-gray-800 dark:text-white/90 whitespace-nowrap">
+                Bricks Management
             </span>
 
-            <img class="logo-icon" :class="sidebarToggle ? 'lg:block' : 'hidden'"
-                src="{{ asset('admin_assets') }}/logo/brick-management-tailadmin.svg" alt="Logo" />
         </a>
+
+        {{-- Close button for mobile — hidden when collapsed --}}
+        <button @click="sidebarToggle = !sidebarToggle" :class="sidebarToggle ? 'lg:hidden' : ''"
+            class="flex items-center justify-center w-8 h-8 rounded-lg text-gray-500 hover:bg-gray-100 dark:hover:bg-white/10 lg:hidden">
+            <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                stroke-width="2">
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+        </button>
+
     </div>
+    <!-- SIDEBAR HEADER -->
     <!-- SIDEBAR HEADER -->
 
     <div class="flex flex-col overflow-y-auto duration-300 ease-linear no-scrollbar">
