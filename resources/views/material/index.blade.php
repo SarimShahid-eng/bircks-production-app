@@ -38,7 +38,7 @@
                 <form method="GET" action="{{ route('materials.index') }}">
                     <div class="flex items-center gap-2">
 
-                        <x-search-input placeholder="Search Materials..."/>
+                        <x-search-input placeholder="Search Materials..." />
 
                         <button type="submit"
                             class="inline-flex h-[42px] items-center gap-2 rounded-lg bg-brand-500 px-4 text-sm font-medium text-white shadow-theme-xs hover:bg-brand-600 transition-colors">
@@ -113,6 +113,16 @@
                                             </svg>
                                         </a>
                                     </div>
+                                    <button type="button" title="Stock Info"
+                                        onclick="showStockInfo('{{ route('materials.stock-info', $material->id) }}')"
+                                        class="inline-flex items-center justify-center w-8 h-8 rounded-lg text-gray-500 hover:text-blue-500 hover:bg-blue-50 dark:text-gray-400 dark:hover:text-blue-400 dark:hover:bg-blue-500/10 transition-colors">
+                                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                                            stroke-width="2">
+                                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                                            <circle cx="12" cy="12" r="3" />
+                                        </svg>
+                                    </button>
+                                    <x-stock-modal />
                                 </td>
 
                             </tr>

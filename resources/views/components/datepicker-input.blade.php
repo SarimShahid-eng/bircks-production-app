@@ -1,6 +1,6 @@
-<div class="relative w-full">
+<div class="relative flex-shrink-0">
     <input type="date" name="{{ $name }}" value="{{ $value }}"
-        class="datepicker h-10 w-full rounded-lg border border-gray-200 bg-white py-2.5 pl-[34px] pr-4 text-theme-sm font-medium text-gray-700 shadow-theme-xs focus:outline-hidden focus:ring-0 focus-visible:outline-hidden dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400" />
+        class="datepicker h-10 w-64 rounded-lg border border-gray-200 bg-white py-2.5 pl-[34px] pr-4 text-theme-sm font-medium text-gray-700 shadow-theme-xs focus:outline-hidden focus:ring-0 focus-visible:outline-hidden dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400" />
 
     <div class="absolute inset-0 right-auto flex items-center pointer-events-none left-4">
         <svg class="fill-gray-700 dark:fill-gray-400" width="20" height="20" viewBox="0 0 20 20" fill="none"

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\MaterialRequest;
 use App\Models\Material;
+use App\Models\ProductionMaterial;
+use App\Models\Purchase;
 use Illuminate\Http\Request;
 
 class MaterialController extends Controller
@@ -15,11 +17,11 @@ class MaterialController extends Controller
             $search = $request->search;
 
             // $query->where(function ($q) use ($search) {
-                $query->where(function ($q) use ($search) {
-                    $q->where('name', 'like', "%{$search}%")
-                        ->orWhere('unit', 'like', "%{$search}%")
-                        ->orWhere('stock_quantity', 'like', "%{$search}%");
-                });
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('unit', 'like', "%{$search}%")
+                    ->orWhere('stock_quantity', 'like', "%{$search}%");
+            });
         }
 
         $title = 'Material management';
@@ -65,5 +67,20 @@ class MaterialController extends Controller
         $title = 'Material Edit';
 
         return view('material.create', compact('title', 'material'));
+    }
+
+    public function stockInfo(Material $material)
+    {
+        $totalPurchased = Purchase::where('material_id', $material->id)->sum('quantity') + Material::find($material->id)->value('stock_quantity');
+        $totalUsed = ProductionMaterial::where('material_id', $material->id)->sum('quantity_used');
+        $currentStock = $totalPurchased - $totalUsed;
+
+        return response()->json([
+            'material' => $material->name,
+            'unit' => $material->unit,
+            'total_purchased' => number_format($totalPurchased, 2),
+            'total_used' => number_format($totalUsed, 2),
+            'current_stock' => number_format($currentStock, 2),
+        ]);
     }
 }

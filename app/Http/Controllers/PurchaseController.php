@@ -69,6 +69,23 @@ class PurchaseController extends Controller
         $suppliers = Supplier::all();
         $title = 'Purchase Edit';
 
-        return view('purchase.create', compact('title', 'purchase','suppliers','materials'));
+        return view('purchase.create', compact('title', 'purchase', 'suppliers', 'materials'));
     }
+
+    // public function stockInfo(Purchase $purchase)
+    // {
+    //     $material = $purchase->material;
+
+    //     $totalPurchased = Purchase::where('material_id', $material->id)->sum('quantity') + Material::find($material->id)->value('stock_quantity');
+    //     $totalUsed = ProductionMaterial::where('material_id', $material->id)->sum('quantity_used');
+    //     $currentStock = $totalPurchased - $totalUsed;
+
+    //     return response()->json([
+    //         'material' => $material->name,
+    //         'unit' => $material->unit,
+    //         'total_purchased' => number_format($totalPurchased, 2),
+    //         'total_used' => number_format($totalUsed, 2),
+    //         'current_stock' => number_format($currentStock, 2),
+    //     ]);
+    // }
 }

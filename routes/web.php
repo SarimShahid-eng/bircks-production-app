@@ -8,11 +8,16 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\ProductionBatchController;
 use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\Report\ProfitController;
+use App\Http\Controllers\Report\PurchaseReportController;
+use App\Http\Controllers\Report\SaleReportController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\Supplier\SupplierController;
 use App\Http\Controllers\Supplier\SupplierLedgerController;
 use App\Http\Controllers\Supplier\SupplierPaymentController;
 use Illuminate\Support\Facades\Route;
+
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -49,6 +54,7 @@ Route::middleware('auth')->group(function () {
             Route::get('create', 'create')->name('create');
             Route::post('store', 'store')->name('store');
             Route::get('edit/{material}', 'edit')->name('edit');
+            Route::get('{material}/stock-info', 'stockInfo')->name('stock-info');
         });
     Route::controller(PurchaseController::class)->prefix('purchases')
         ->name('purchases.')
@@ -95,9 +101,21 @@ Route::middleware('auth')->group(function () {
             Route::post('store', 'store')->name('store');
             Route::get('edit/{batch}', 'edit')->name('edit');
         });
+    Route::prefix('reports')
+        ->name('reports.')
+        ->group(function () {
+            Route::controller(ProfitController::class)->group(function () {
+                Route::get('profit', 'profit')->name('profit');
+            });
+            Route::controller(PurchaseReportController::class)->group(function () {
+                Route::get('purchase', 'purchases')->name('purchases');
+            });
+            Route::controller(SaleReportController::class)->group(function () {
+                Route::get('sale', 'sales')->name('sales');
+            });
+        });
     Route::get('/materials/{material}/rate', fn (\App\Models\Material $material) => response()->json(['avg_rate' => $material->avg_rate])
     )->name('materials.rate');
-    // Route::controller()
 });
 
 Route::controller(LoginController::class)->group(function () {
